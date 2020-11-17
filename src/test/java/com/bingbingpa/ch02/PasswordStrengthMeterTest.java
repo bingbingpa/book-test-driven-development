@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PasswordStrengthMeterTest {
     private final PasswordStrengthMeter meter = new PasswordStrengthMeter();
@@ -12,6 +11,7 @@ public class PasswordStrengthMeterTest {
     private void assertStrength(String password, PasswordStrength expStr) {
         PasswordStrength result = meter.meter(password);
         assertThat(expStr).isEqualTo(result);
+//        assertEquals(expStr, result);
     }
 
     @Test
@@ -49,6 +49,24 @@ public class PasswordStrengthMeterTest {
     @Test
     @DisplayName("대문자를 포함하지 않고 나머지 조건은 충족하는 경우에 대한 테스트 추가")
     void meetsOtherCriteria_except_for_Uppercase_Then_Normal() {
+        assertStrength("ab12!@df", PasswordStrength.NORMAL);
+    }
 
+    @Test
+    @DisplayName("길이가 8글자 이상인 조건만 충족하는 경우를 검증하기 위한 테스트 코드")
+    void meetsOnlyLengthCriteria_Then_Weak() {
+        assertStrength("abdefghi", PasswordStrength.WEAK);
+    }
+
+    @Test
+    @DisplayName("숫자 포함 조건만 충족하는 경우를 검증하기 위한 테스트")
+    void meetsOnlyNumCriteria_Then_Weak() {
+        assertStrength("12345", PasswordStrength.WEAK);
+    }
+
+    @Test
+    @DisplayName("대문자 포함 조건만 충족하는 경우를 검증하기 위한 테스트")
+    void meetsOnlyUpperCriteria_Then_Weak() {
+        assertStrength("ABZEF", PasswordStrength.WEAK);
     }
 }
