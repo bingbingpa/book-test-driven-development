@@ -3,6 +3,7 @@ package com.bingbingpa.ch02;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PasswordStrengthMeterTest {
@@ -10,7 +11,7 @@ public class PasswordStrengthMeterTest {
 
     private void assertStrength(String password, PasswordStrength expStr) {
         PasswordStrength result = meter.meter(password);
-        assertEquals(expStr, result);
+        assertThat(expStr).isEqualTo(result);
     }
 
     @Test
@@ -43,5 +44,11 @@ public class PasswordStrengthMeterTest {
     @DisplayName("입력이 빈 문자열인 경우에 대한 테스트 추가")
     void emptyInput_Then_Invalid() {
         assertStrength("", PasswordStrength.INVALID);
+    }
+
+    @Test
+    @DisplayName("대문자를 포함하지 않고 나머지 조건은 충족하는 경우에 대한 테스트 추가")
+    void meetsOtherCriteria_except_for_Uppercase_Then_Normal() {
+
     }
 }
